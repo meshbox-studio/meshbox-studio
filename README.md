@@ -15,3 +15,17 @@ Meshbox Studio acts as your personal 3D printing journal and file vault.
 > This project serves as a personal learning journey into Go.
 > While the frontend was primarily scaffolded and styled with the help of AI,
 > the backend logic is mostly written by hand to ensure a deep, practical understanding of Go patterns and architecture.
+
+## Features
+
+TBD
+
+## Getting Started
+
+TBD
+
+## License
+
+This project is licensed under the GNU Affero General Public License v3.0.
+
+See the full license text in [LICENSE](LICENSE).
