@@ -20,8 +20,8 @@ func main() {
 	setupAssetsRoutes(mux)
 	setupPageRoutes(mux)
 
-	fmt.Println("Server is running on http://localhost:8090")
-	err := http.ListenAndServe(":8090", mux)
+	fmt.Println("Server is running on http://localhost:8080")
+	err := http.ListenAndServe(":8080", mux)
 	if err != nil {
 		panic(err)
 	}
@@ -48,7 +48,11 @@ func initDotEnv() {
 }
 
 func setupAssetsRoutes(mux *http.ServeMux) {
-	isDevelopment := os.Getenv("GO_ENV") != "production"
+	isDevelopment := os.Getenv("GO_ENV") == "development"
+
+	if isDevelopment {
+		fmt.Println("Server is running in development mode")
+	}
 
 	// Your app assets (CSS, fonts, images, ...)
 	assetHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {

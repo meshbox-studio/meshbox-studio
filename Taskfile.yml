@@ -3,22 +3,45 @@ version: "3"
 tasks:
   templ:
     desc: Run templ with integrated server and hot reload
+    env:
+      GO_ENV: development
     cmds:
-      - go tool templ generate --watch -proxyport="8080" --proxy="http://localhost:8090" --cmd="go run ./cmd/meshbox-studio" --open-browser=true
+      - go tool templ generate --watch -proxyport="8090" --proxy="http://localhost:8080" --cmd="go run ./cmd/meshbox-studio" --open-browser=true
 
-  tailwind:
-    desc: Watch Tailwind CSS changes
+  css:sources:
+    internal: true
+    desc: Generate Tailwind sources config
+    vars:
+      TEMPLUI_PATH:
+        sh: go list -mod=mod -m -f {{`'{{.Dir}}'`}} github.com/templui/templui
     cmds:
       - |
-        TEMPLUI_PATH="$(go list -mod=mod -m -f {{`'{{.Dir}}'`}} github.com/templui/templui)" && \
         printf '%s\n' \
           '@source "./**/*.templ";' \
           '@source "./**/*.js";' \
           "@source \"$TEMPLUI_PATH/components/**/*.templ\";" \
           "@source \"$TEMPLUI_PATH/components/**/*.js\";" \
-          > ./assets/css/sources.generated.css && \
-        tailwindcss -i ./assets/css/input.css -o ./assets/css/output.css --watch
+          > ./assets/css/sources.generated.css
+
+  tailwind:build:
+    desc: Build Tailwind CSS once
+    cmds:
+      - task: css:sources
+      - tailwindcss -i ./assets/css/input.css -o ./assets/css/output.css --minify
+
+  tailwind:watch:
+    desc: Watch Tailwind CSS changes
+    cmds:
+      - task: css:sources
+      - tailwindcss -i ./assets/css/input.css -o ./assets/css/output.css --watch
   dev:
     desc: Start development server with hot reload
     cmds:
-      - task --parallel tailwind templ
+      - task --parallel tailwind:watch templ
+
+  ko:local:
+    desc: Build and publish image to the local daemon with ko
+    cmds:
+      - go tool templ generate
+      - task: tailwind:build
+      - ko build --local --bare ./cmd/meshbox-studio
