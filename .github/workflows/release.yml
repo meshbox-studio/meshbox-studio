@@ -2,6 +2,14 @@ name: Release
 
 on:
   workflow_dispatch:
+    inputs:
+      release-type:
+        description: Type of release to create
+        required: true
+        type: choice
+        options:
+          - Prerelease
+          - Release
 
 jobs:
   release:
@@ -13,17 +21,47 @@ jobs:
       pull-requests: write
       packages: write
     steps:
+
       - name: Checkout
         uses: actions/checkout@v6
         with:
           fetch-depth: 0
+
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
           node-version: "lts/*"
+
+      - name: Setup Semantic Release
+        run: |
+          npm install \
+            semantic-release \
+            @semantic-release/github \
+            @semantic-release/commit-analyzer \
+            @semantic-release/release-notes-generator \
+            conventional-changelog-conventionalcommits
+
+      - name: Patch semantic-release for prerelease support
+        run: |
+          git apply --verbose --directory=node_modules/semantic-release <<'PATCH'
+          diff --git a/lib/definitions/branches.js b/lib/definitions/branches.js
+          index a7c19d4e2b..f3e8b1c9ad 100644
+          --- a/lib/definitions/branches.js
+          +++ b/lib/definitions/branches.js
+          @@ -18,5 +18,5 @@ export const prerelease = {
+           export const release = {
+             // eslint-disable-next-line unicorn/no-fn-reference-in-iterator
+             filter: (branch) => !maintenance.filter(branch) && !prerelease.filter(branch),
+          -  branchesValidator: (branches) => branches.length <= 3 && branches.length > 0,
+          +  branchesValidator: (branches) => branches.length <= 3 && (branches.length > 0 || prerelease.branchesValidator(branches)),
+           };
+          PATCH
+
       - name: Move configfile
-        run: mv .github/.releaserc.json .releaserc.json
+        run: mv .github/release.config.mjs release.config.mjs
+
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          IS_RELEASE: ${{ github.event.inputs.release-type == 'Release' }}
         run: npx semantic-release
