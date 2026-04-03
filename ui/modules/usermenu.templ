@@ -1,0 +1,46 @@
+package modules
+
+import (
+	"github.com/templui/templui/components/avatar"
+	"github.com/templui/templui/components/dropdown"
+	"github.com/templui/templui/components/icon"
+)
+
+templ UserMenu() {
+	@dropdown.Dropdown() {
+		@dropdown.Trigger() {
+			<button type="button" class="rounded-full border border-border p-0.5 hover:bg-accent hover:text-accent-foreground" aria-label="Open user menu">
+				@avatar.Avatar(avatar.Props{Class: "h-9 w-9"}) {
+					@avatar.Fallback(avatar.FallbackProps{Class: "bg-muted text-xs font-semibold"}) {
+						NS
+					}
+				}
+			</button>
+		}
+
+		@dropdown.Content(dropdown.ContentProps{
+			Placement: dropdown.PlacementBottomEnd,
+			Class:     "w-56",
+		}) {
+			@dropdown.Label() {
+				<div class="flex flex-col text-center">
+					<span class="text-sm font-semibold">Niklas Studio</span>
+					<span class="text-xs text-muted-foreground">niklas@example.com</span>
+				</div>
+			}
+			@dropdown.Separator()
+			@dropdown.Item(dropdown.ItemProps{Href: "/settings"}) {
+				<span class="flex w-full items-center justify-center gap-2">
+					@icon.Settings(icon.Props{Class: "size-4"})
+					Settings
+				</span>
+			}
+			@dropdown.Item(dropdown.ItemProps{Href: "/logout"}) {
+				<span class="flex w-full items-center justify-center gap-2 text-destructive">
+					@icon.LogOut(icon.Props{Class: "size-4"})
+					Logout
+				</span>
+			}
+		}
+	}
+}

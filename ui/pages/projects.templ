@@ -1,0 +1,56 @@
+package pages
+
+import (
+	"github.com/templui/templui/components/button"
+	"github.com/templui/templui/components/icon"
+	"github.com/meshbox-studio/meshbox-studio/ui/layouts"
+)
+
+templ Projects() {
+	@layouts.BaseLayout("/projects") {
+		<div class="flex h-full items-center justify-center">
+			<div class="flex w-full max-w-2xl flex-col items-center justify-center gap-6 px-4">
+				<div class="space-y-4 text-center">
+					<h1 class="text-5xl font-bold tracking-tight">Welcome to Meshbox<strong>Studio</strong></h1>
+					<p class="text-muted-foreground mx-auto max-w-l text-lg">
+						Archive prints, notes, and settings for your maker workflow.
+					</p>
+				</div>
+				<div class="flex flex-col gap-6">
+					<div class="flex flex-col items-center gap-2">
+						<p class="text-muted-foreground text-m">Getting started by</p>
+						@button.Button(button.Props{
+							Variant: button.VariantDefault,
+							Href:    "/create",
+						}) {
+							@icon.FolderPlus(icon.Props{Class: "size-4"})
+							Create your first Project
+						}
+					</div>
+					<div class="flex flex-col items-center gap-2">
+						<p class="text-muted-foreground text-m">Learn more</p>
+						<div class="flex gap-2">
+							@button.Button(button.Props{
+								Variant: button.VariantOutline,
+								Href:    "https://meshbox.studio",
+								Target:  "_blank",
+							}) {
+								@icon.Book(icon.Props{Class: "size-4"})
+								Documentation
+							}
+							@button.Button(button.Props{
+								Variant: button.VariantOutline,
+								Href:    "https://github.com/meshbox-studio/meshbox-studio",
+								Target:  "_blank",
+							}) {
+								@icon.GitBranch(icon.Props{Class: "size-4"})
+								Repository
+							}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	
+	}
+}

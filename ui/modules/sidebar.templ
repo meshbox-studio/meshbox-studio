@@ -1,0 +1,91 @@
+package modules
+
+import (
+	"strconv"
+
+	"github.com/templui/templui/components/icon"
+	"github.com/templui/templui/components/sidebar"
+)
+
+templ AppSidebar(currentPath string) {
+	@sidebar.Sidebar(sidebar.Props{
+		ID:          "app-sidebar",
+		Collapsible: sidebar.CollapsibleOffcanvas,
+		Attributes: templ.Attributes{
+			"style": "--sidebar-width:22rem",
+		},
+	}) {
+		@sidebar.Header() {
+		  <a href="/" class="flex w-full justify-center px-2 pt-4 pb-0">
+				<span class="block w-full text-center text-4xl">Meshbox<span class="font-bold">Studio</span></span>
+			</a>
+		}
+
+		@sidebar.Separator()
+
+		@sidebar.Content() {
+			@sidebar.Group() {
+				@sidebar.GroupLabel() {
+					Navigation
+				}
+				@sidebar.Menu() {
+					@sidebar.MenuItem() {
+						@sidebar.MenuButton(sidebar.MenuButtonProps{Href: "/projects", IsActive: currentPath == "/projects", Tooltip: "Projects"}) {
+							@icon.Folder(icon.Props{Class: "size-4"})
+							<span>Projects</span>
+						}
+					}
+					@sidebar.MenuItem() {
+						@sidebar.MenuButton(sidebar.MenuButtonProps{Href: "/archive", IsActive: currentPath == "/archive", Tooltip: "Archive"}) {
+							@icon.Archive(icon.Props{Class: "size-4"})
+							<span>Archive</span>
+						}
+					}
+					@sidebar.MenuItem() {
+						@sidebar.MenuButton(sidebar.MenuButtonProps{Href: "/trash", IsActive: currentPath == "/trash", Tooltip: "Trash"}) {
+							@icon.Trash2(icon.Props{Class: "size-4"})
+							<span>Trash</span>
+						}
+					}
+				}
+			}
+			@sidebar.Separator()
+			@sidebar.Group() {
+				@sidebar.GroupLabel() {
+					Project
+				}
+				@sidebar.Menu() {
+					@sidebar.MenuItem() {
+						@sidebar.MenuButton(sidebar.MenuButtonProps{Href: "https://github.com/meshbox-studio/meshbox-studio", Tooltip: "Repository"}) {
+							@icon.GitBranch(icon.Props{Class: "size-4"})
+							<span>Repository</span>
+						}
+					}
+				}
+			}
+		}
+
+		@sidebar.Footer() {
+			{{ stats := GetSidebarStats() }}
+			<div class="rounded-md bg-sidebar-accent px-3 py-2 text-xs text-sidebar-accent-foreground">
+				<div class="flex items-center gap-2 font-medium">
+					@icon.HardDrive(icon.Props{Class: "size-4"})
+					<span>Disk</span>
+					<span class="ml-auto font-mono tabular-nums">{ stats.DiskPercent }%</span>
+				</div>
+				<div class="mt-1 font-mono tabular-nums text-sidebar-accent-foreground/80">
+					{ stats.DiskUsed } / { stats.DiskTotal }
+				</div>
+				<div class="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-sidebar-border/70">
+					<div class="h-full rounded-full bg-sidebar-primary transition-[width] duration-300" style={ templ.SafeCSS("width:" + strconv.Itoa(stats.DiskPercent) + "%") }></div>
+				</div>
+				<div class="mt-2 h-px bg-sidebar-border/60"></div>
+				<div class="mt-2 flex items-center gap-2 font-medium">
+					@icon.Server(icon.Props{Class: "size-4"})
+					<span>Server</span>
+					<span class="ml-auto font-mono tabular-nums text-sidebar-accent-foreground/80">{ stats.Version }</span>
+				</div>
+			</div>
+		}
+	}
+}

@@ -1,0 +1,84 @@
+package layouts
+
+import (
+	"github.com/meshbox-studio/meshbox-studio/ui/modules"
+	"github.com/templui/templui/components/dropdown"
+	"github.com/templui/templui/components/icon"
+	"github.com/templui/templui/components/sidebar"
+)
+
+templ BaseLayout(currentPath string) {
+	<!DOCTYPE html>
+	<html lang="en" class="h-full dark">
+		<head>
+			<meta charset="UTF-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+			@sidebar.Script()
+			@dropdown.Script()
+			<link rel="preload" href="/assets/fonts/geist/geist-variable.woff2" as="font" type="font/woff2" crossorigin="anonymous"/>
+			<link rel="preload" href="/assets/fonts/geist/geist-mono-variable.woff2" as="font" type="font/woff2" crossorigin="anonymous"/>
+			<title>Meshbox</title>
+			<link href="/assets/css/output.css" rel="stylesheet"/>
+		</head>
+		<body class="h-full">
+			@sidebar.Layout() {
+				@modules.AppSidebar(currentPath)
+				@sidebar.Inset() {
+					<div class="flex h-full flex-col">
+						<header class="border-b p-4 md:p-4">
+							<input id="mobile-search-mode" type="checkbox" class="peer/mobile-search sr-only md:hidden"/>
+							<div class="grid min-h-12 grid-cols-[minmax(0,_1fr)_auto] gap-4 items-center peer-checked/mobile-search:hidden md:grid-cols-[minmax(0,_1fr)_auto] md:min-h-0">
+								<div class="flex w-full min-w-0 items-center gap-2 md:max-w-[500px]">
+									@sidebar.Trigger(sidebar.TriggerProps{Class: "inline-flex md:hidden", Target: "app-sidebar"})
+									<div class="relative hidden min-w-0 flex-1 md:block">
+										<span class="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground">
+											@icon.Search(icon.Props{Class: "size-5"})
+										</span>
+										<input
+											type="search"
+											name="q"
+											placeholder="Search projects, prints, notes, and materials..."
+											class="h-12 w-full rounded-xl border border-input bg-background pl-12 pr-4 text-base shadow-sm outline-none ring-offset-background placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring"
+										/>
+									</div>
+								</div>
+								<div class="flex items-center gap-2 justify-self-end whitespace-nowrap">
+									<label for="mobile-search-mode" class="inline-flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-md hover:bg-accent hover:text-accent-foreground md:hidden" aria-label="Open search">
+										@icon.Search(icon.Props{Class: "size-5"})
+									</label>
+									<a href="/create" class="inline-flex h-9 items-center gap-2 rounded-md px-3 text-sm font-medium hover:bg-accent hover:text-accent-foreground" aria-label="Create Project">
+										@icon.FolderPlus(icon.Props{Class: "size-5"})
+										<span>Create Project</span>
+									</a>
+									@modules.ThemeSwitcher(modules.ThemeSwitcherProps{Class: "h-9 w-9"})
+									@modules.UserMenu()
+								</div>
+							</div>
+							<div class="hidden min-h-12 items-center gap-2 md:hidden peer-checked/mobile-search:flex">
+								<label for="mobile-search-mode" class="inline-flex h-12 w-12 shrink-0 cursor-pointer items-center justify-center rounded-md border border-input hover:bg-accent hover:text-accent-foreground" aria-label="Back">
+									@icon.ArrowLeft(icon.Props{Class: "size-5"})
+									<span class="sr-only">Back</span>
+								</label>
+								<div class="relative min-w-0 flex-1">
+									<span class="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground">
+										@icon.Search(icon.Props{Class: "size-5"})
+									</span>
+									<input
+										type="search"
+										name="mobile-q"
+										autofocus
+										placeholder="Search projects, prints, notes, and materials..."
+										class="h-12 w-full rounded-xl border border-input bg-background pl-12 pr-4 text-base shadow-sm outline-none ring-offset-background placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring"
+									/>
+								</div>
+							</div>
+							</header>
+						<main class="flex-1">
+							{ children... }
+						</main>
+					</div>
+				}
+			}
+		</body>
+	</html>
+}

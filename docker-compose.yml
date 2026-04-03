@@ -1,0 +1,11 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - 8090:8090
+    environment:
+      APP_ENV: ${APP_ENV}
+      PORT: 8090
