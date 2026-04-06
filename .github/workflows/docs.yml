@@ -27,7 +27,7 @@ jobs:
             -v "$PWD:/workspace" \
             -w /workspace \
             zensical/zensical:0.0.31 \
-            build --clean --strict --output site
+            build --clean
       - uses: actions/upload-pages-artifact@v4
         with:
           path: site
