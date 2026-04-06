@@ -21,13 +21,13 @@ export default {
         preset: 'angular',
       },
     ],
-    [
-      '@semantic-release/github',
-      {
-        discussionCategoryName: 'Announcements',
-        releasedLabels: false,
-        draftRelease: isRelease,
-      },
-    ],
+    // [
+    //   '@semantic-release/github',
+    //   {
+    //     discussionCategoryName: 'Announcements',
+    //     releasedLabels: false,
+    //     draftRelease: isRelease,
+    //   },
+    // ],
   ],
 };

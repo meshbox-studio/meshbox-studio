@@ -38,12 +38,7 @@ jobs:
 
       - name: Setup Semantic Release
         run: |
-          npm install \
-            semantic-release \
-            @semantic-release/github \
-            @semantic-release/commit-analyzer \
-            @semantic-release/release-notes-generator \
-            conventional-changelog-conventionalcommits
+          npm install semantic-release
 
       - name: Patch semantic-release for prerelease support
         run: |
