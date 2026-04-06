@@ -14,16 +14,16 @@ export default {
         preset: 'angular',
       },
     ],
-    // [
-    //   '@semantic-release/release-notes-generator',
-    //   {
-    //     preset: 'angular',
-    //   },
-    // ],
+    [
+      '@semantic-release/release-notes-generator',
+      {
+        preset: 'angular',
+      },
+    ],
     [
       '@semantic-release/github',
       {
-        discussionCategoryName: 'Announcements',
+        // discussionCategoryName: 'Announcements',
         releasedLabels: false,
         draftRelease: isRelease,
       },
