@@ -12,22 +12,22 @@ export default {
     [
       '@semantic-release/commit-analyzer',
       {
-        preset: 'angular',
+        preset: 'conventionalcommits',
       },
     ],
     [
       '@semantic-release/release-notes-generator',
       {
-        preset: 'angular',
+        preset: 'conventionalcommits',
       },
     ],
-    [
-      '@semantic-release/github',
-      {
-        discussionCategoryName: 'Announcements',
-        releasedLabels: false,
-        draftRelease: isRelease,
-      },
-    ],
+    // [
+    //   '@semantic-release/github',
+    //   {
+    //     discussionCategoryName: 'Announcements',
+    //     releasedLabels: false,
+    //     draftRelease: isRelease,
+    //   },
+    // ],
   ],
 };
