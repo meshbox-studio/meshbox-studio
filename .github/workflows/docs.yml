@@ -11,6 +11,7 @@ on:
   pull_request: *push
   release:
     types:
+      - prereleased
       - published
 
 permissions:
