@@ -10,6 +10,7 @@ Meshbox Studio acts as your personal 3D printing journal and file vault.
 > [!IMPORTANT]
 > This project is still in early development and not recommended for general use.
 > We are currently focusing on architectural foundations and welcome early feedback or contributions to help shape the roadmap.
+
 > [!NOTE]
 > This project serves as a personal learning journey into Go.
 > While the frontend was primarily scaffolded and styled with the help of AI,

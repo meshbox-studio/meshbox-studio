@@ -1,0 +1,35 @@
+name: Documentation
+
+on:
+  push: &push
+    branches:
+      - main
+    paths:
+      - docs/**
+      - .github/workflows/docs.yml
+      - zensical.toml
+  pull_request: *push
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/configure-pages@v6
+      - uses: actions/checkout@v6
+      - name: Build docs with zensical container
+        run: |
+          docker run --rm \
+            -v "$PWD:/workspace" \
+            -w /workspace \
+            zensical/zensical:0.0.31 \
+            build --clean --strict --output site
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: site
+      - uses: actions/deploy-pages@v5
+        if: github.ref == 'refs/heads/main'

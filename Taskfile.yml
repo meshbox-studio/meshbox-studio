@@ -34,6 +34,7 @@ tasks:
     cmds:
       - task: css:sources
       - tailwindcss -i ./assets/css/input.css -o ./assets/css/output.css --watch
+
   dev:
     desc: Start development server with hot reload
     cmds:
@@ -45,3 +46,11 @@ tasks:
       - go tool templ generate
       - task: tailwind:build
       - ko build --local --bare ./cmd/meshbox-studio
+
+  docs:
+    desc: Run docs locally with docker
+    vars:
+      ZENSICAL_VERSION:
+        sh: grep -oP 'zensical/zensical:\K[^[:space:]]+' {{.ROOT_DIR}}/.github/workflows/docs.yml
+    cmds:
+      - docker run --rm -p 8000:8000 -u $(id -u):$(id -g) -v "{{.ROOT_DIR}}:/app" -w /app zensical/zensical:{{.ZENSICAL_VERSION}}
