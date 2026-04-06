@@ -51,6 +51,7 @@ tasks:
     desc: Run docs locally with docker
     vars:
       ZENSICAL_VERSION:
-        sh: grep -oP 'zensical/zensical:\K[^[:space:]]+' {{.ROOT_DIR}}/.github/workflows/docs.yml
+        sh: |
+          grep -oP 'ZENSICAL_VERSION: \K[^[:space:]]+' {{.ROOT_DIR}}/.github/workflows/docs.yml
     cmds:
       - docker run --rm -p 8000:8000 -u $(id -u):$(id -g) -v "{{.ROOT_DIR}}:/app" -w /app zensical/zensical:{{.ZENSICAL_VERSION}}
