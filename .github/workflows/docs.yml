@@ -15,6 +15,10 @@ permissions:
   pages: write
   id-token: write
 
+env:
+  # renovate: datasource=docker depName=zensical/zensical versioning=semver
+  ZENSICAL_VERSION: zensical/zensical:0.0.31
+
 jobs:
   docs:
     runs-on: ubuntu-latest
@@ -26,7 +30,7 @@ jobs:
           docker run --rm \
             -v "$PWD:/workspace" \
             -w /workspace \
-            zensical/zensical:0.0.31 \
+            $ZENSICAL_VERSION \
             build --clean
       - uses: actions/upload-pages-artifact@v4
         with:
