@@ -5,7 +5,6 @@
 const isRelease = process.env.IS_RELEASE === 'true';
 
 export default {
-  debug: true,
   branches: isRelease ? ['main'] : [{ name: 'main', prerelease: 'prerelease' }],
   tagFormat: '${version}',
   plugins: [
