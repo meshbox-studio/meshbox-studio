@@ -15,19 +15,19 @@ export default {
         preset: 'angular',
       },
     ],
-    [
-      '@semantic-release/release-notes-generator',
-      {
-        preset: 'angular',
-      },
-    ],
     // [
-    //   '@semantic-release/github',
+    //   '@semantic-release/release-notes-generator',
     //   {
-    //     discussionCategoryName: 'Announcements',
-    //     releasedLabels: false,
-    //     draftRelease: isRelease,
+    //     preset: 'angular',
     //   },
     // ],
+    [
+      '@semantic-release/github',
+      {
+        discussionCategoryName: 'Announcements',
+        releasedLabels: false,
+        draftRelease: isRelease,
+      },
+    ],
   ],
 };
