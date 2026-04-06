@@ -9,6 +9,9 @@ on:
       - .github/workflows/docs.yml
       - zensical.toml
   pull_request: *push
+  release:
+    types:
+      - published
 
 permissions:
   contents: read
