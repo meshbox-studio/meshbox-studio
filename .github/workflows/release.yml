@@ -63,4 +63,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           IS_RELEASE: ${{ github.event.inputs.release-type == 'Release' }}
-        run: npx semantic-release
+        run: npx semantic-release --debug
