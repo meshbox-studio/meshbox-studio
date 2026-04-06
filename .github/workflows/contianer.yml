@@ -62,7 +62,7 @@ jobs:
           if [[ "${{ github.ref_type }}" == "tag" ]]; then
             VERSION="${{ github.ref_name }}"
             if [[ "${VERSION}" == *-* ]]; then
-              # Pre-release tag (e.g. 1.0.0-rc.1): only exact tag + sha
+              # Pre-release tag (e.g. 1.0.0-prerelease.1): only exact tag + sha
               echo "tags=${VERSION},${SHA}" >> "$GITHUB_OUTPUT"
             else
               # Release tag (e.g. 1.1.1): floating major/minor tags + sha
