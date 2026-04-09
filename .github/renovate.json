@@ -6,6 +6,8 @@
     "customManagers:githubActionsVersions"
   ],
   "postUpdateOptions": [
-    "gomodTidy"
+    "gomodTidyE",
+    "gomodMassage",
+    "gomodUpdateImportPaths"
   ]
 }
