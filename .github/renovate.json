@@ -5,22 +5,9 @@
     "config:recommended",
     "customManagers:githubActionsVersions"
   ],
-  "packageRules": [
-    {
-      "matchManagers": [
-        "gomod"
-      ],
-      "postUpgradeTasks": {
-        "commands": [
-          "go tool templ generate"
-        ],
-        "fileFilters": [
-          "**/*.templ",
-          "go.mod",
-          "go.sum"
-        ],
-        "executionMode": "update"
-      }
-    }
+  "postUpdateOptions": [
+    "gomodTidyE",
+    "gomodMassage",
+    "gomodUpdateImportPaths"
   ]
 }
