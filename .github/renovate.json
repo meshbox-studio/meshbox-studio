@@ -9,5 +9,19 @@
     "gomodTidyE",
     "gomodMassage",
     "gomodUpdateImportPaths"
+  ],
+  "packageRules": [
+    {
+			"matchManagers": ["gomod"],
+			"goGetDirs": ["github.com/meshbox-studio/meshbox-studio/ui/pages@none"],
+			"postUpgradeTasks": {
+				"commands": [
+					"cd {{packageFileDir}} && install-tool golang 1.26",
+					"cd {{packageFileDir}} && go mod tidy -e",
+					"cd {{packageFileDir}} && go generate",
+					"cd {{packageFileDir}} && go mod tidy"
+				]
+			}
+		}
   ]
 }
