@@ -1,51 +1,77 @@
 version: "3"
 
 tasks:
-  templ:
-    desc: Run templ with integrated server and hot reload
+  backend:dev:
+    desc: Run backend API and embedded SPA server
     env:
       GO_ENV: development
     cmds:
-      - go tool templ generate --watch -proxyport="8090" --proxy="http://localhost:8080" --cmd="go run ./cmd/meshbox-studio" --open-browser=true
+      - go run .
+    dir: ./backend
 
-  css:sources:
-    internal: true
-    desc: Generate Tailwind sources config
-    vars:
-      TEMPLUI_PATH:
-        sh: go list -mod=mod -m -f {{`'{{.Dir}}'`}} github.com/templui/templui
+  frontend:install:
+    desc: Install frontend dependencies
     cmds:
-      - |
-        printf '%s\n' \
-          '@source "./**/*.templ";' \
-          '@source "./**/*.js";' \
-          '@source "{{.TEMPLUI_PATH}}/components/**/*.templ";' \
-          '@source "{{.TEMPLUI_PATH}}/components/**/*.js";' \
-          > ./assets/css/sources.generated.css
+      - npm --prefix frontend install
 
-  tailwind:build:
-    desc: Build Tailwind CSS once
+  frontend:dev:
+    desc: Run frontend Vite dev server
     cmds:
-      - task: css:sources
-      - tailwindcss -i ./assets/css/input.css -o ./assets/css/output.css --minify
+      - npm --prefix frontend run dev
 
-  tailwind:watch:
-    desc: Watch Tailwind CSS changes
+  frontend:build:
+    desc: Build frontend bundle into backend/internal/webui/dist
     cmds:
-      - task: css:sources
-      - tailwindcss -i ./assets/css/input.css -o ./assets/css/output.css --watch
+      - npm --prefix frontend run build
+
+  api:generate:spec:
+    desc: Export OpenAPI spec from Go backend
+    cmds:
+      - go run . openapi > {{.ROOT_DIR}}/api/openapi.yaml
+    dir: ./backend
+
+  api:generate:client:
+    desc: Generate typed TypeScript client from OpenAPI spec
+    cmds:
+      - npm --prefix frontend run generate:api
+
+  api:generate:
+    desc: Regenerate the OpenAPI spec and typed client
+    cmds:
+      - task api:generate:spec
+      - task api:generate:client
 
   dev:
-    desc: Start development server with hot reload
+    desc: Start backend and frontend development servers
     cmds:
-      - task --parallel tailwind:watch templ
+      - task frontend:install
+      - task api:generate
+      - task --parallel backend:dev frontend:dev
+
+  build:
+    desc: Build frontend and backend binaries
+    cmds:
+      - task frontend:install
+      - task api:generate
+      - task frontend:build
+      - go -C backend build ./...
+
+  test:
+    desc: Run all tests (backend + frontend)
+    cmds:
+      - task frontend:install
+      - task api:generate
+      - task frontend:build
+      - go -C backend test ./...
+      - npm --prefix frontend run test
 
   ko:local:
     desc: Build and publish image to the local daemon with ko
     cmds:
-      - go tool templ generate
-      - task: tailwind:build
-      - ko build --local --bare ./cmd/meshbox-studio
+      - task frontend:install
+      - task api:generate
+      - task frontend:build
+      - ko build --local --bare ./backend
 
   docs:
     desc: Run docs locally with docker

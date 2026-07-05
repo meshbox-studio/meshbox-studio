@@ -1,0 +1,15 @@
+logs
+*.log
+node_modules
+.nuxt
+.output
+.nitro
+.cache
+coverage
+*.local
+app/api/generated/
+
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
