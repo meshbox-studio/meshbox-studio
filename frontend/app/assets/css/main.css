@@ -1,0 +1,23 @@
+@import "tailwindcss";
+@import "@nuxt/ui";
+
+@layer base {
+  body {
+    @apply bg-zinc-50 text-zinc-900 antialiased dark:bg-zinc-950 dark:text-zinc-100;
+    margin: 0;
+    min-height: 100svh;
+    background-image:
+      radial-gradient(circle at 0% 0%, color-mix(in oklab, var(--ui-color-primary-400) 15%, transparent) 0, transparent 35%),
+      radial-gradient(circle at 100% 100%, color-mix(in oklab, var(--ui-color-primary-600) 10%, transparent) 0, transparent 40%);
+    background-attachment: fixed;
+  }
+
+  #__nuxt {
+    min-height: 100svh;
+  }
+
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+}

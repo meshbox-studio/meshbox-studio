@@ -1,0 +1,35 @@
+{
+  "name": "meshbox-studio-frontend",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "nuxt dev",
+    "build": "nuxt generate",
+    "preview": "nuxt preview",
+    "typecheck": "nuxt typecheck",
+    "test": "vitest run --passWithNoTests",
+    "lint": "eslint .",
+    "prepare": "nuxt prepare",
+    "generate:api": "openapi-typescript ../api/openapi.yaml -o ./app/api/generated/schema.d.ts"
+  },
+  "dependencies": {
+    "@nuxt/ui": "^4.1.0",
+    "nuxt": "^4.0.3",
+    "openapi-fetch": "^0.17.0",
+    "tailwindcss": "^4.1.12",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@nuxt/eslint": "^1.9.0",
+    "@nuxt/test-utils": "^3.14.0",
+    "@vue/test-utils": "^2.4.6",
+    "eslint": "^9.33.0",
+    "happy-dom": "^15.11.7",
+    "openapi-typescript": "^7.13.0",
+    "playwright-core": "^1.48.2",
+    "typescript": "~6.0.2",
+    "vitest": "^2.1.3",
+    "vue-tsc": "^2.2.0"
+  }
+}

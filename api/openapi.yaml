@@ -1,0 +1,769 @@
+components:
+  schemas:
+    Cookie:
+      additionalProperties: false
+      properties:
+        Domain:
+          type: string
+        Expires:
+          format: date-time
+          type: string
+        HttpOnly:
+          type: boolean
+        MaxAge:
+          format: int64
+          type: integer
+        Name:
+          type: string
+        Partitioned:
+          type: boolean
+        Path:
+          type: string
+        Quoted:
+          type: boolean
+        Raw:
+          type: string
+        RawExpires:
+          type: string
+        SameSite:
+          format: int64
+          type: integer
+        Secure:
+          type: boolean
+        Unparsed:
+          items:
+            type: string
+          type:
+            - array
+            - "null"
+        Value:
+          type: string
+      required:
+        - Name
+        - Value
+        - Quoted
+        - Path
+        - Domain
+        - Expires
+        - RawExpires
+        - MaxAge
+        - Secure
+        - HttpOnly
+        - SameSite
+        - Partitioned
+        - Raw
+        - Unparsed
+      type: object
+    CreateInputBody:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          examples:
+            - https://example.com/api/schemas/CreateInputBody.json
+          format: uri
+          readOnly: true
+          type: string
+        description:
+          type: string
+        title:
+          maxLength: 120
+          minLength: 1
+          type: string
+      required:
+        - title
+        - description
+      type: object
+    EditInputBody:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          examples:
+            - https://example.com/api/schemas/EditInputBody.json
+          format: uri
+          readOnly: true
+          type: string
+        description:
+          type: string
+        license:
+          $ref: "#/components/schemas/License"
+        source:
+          $ref: "#/components/schemas/Source"
+        tags:
+          items:
+            type: string
+          type:
+            - array
+            - "null"
+        title:
+          type: string
+      required:
+        - title
+        - description
+        - tags
+        - source
+        - license
+      type: object
+    ErrorDetail:
+      additionalProperties: false
+      properties:
+        location:
+          description: Where the error occurred, e.g. 'body.items[3].tags' or 'path.thing-id'
+          type: string
+        message:
+          description: Error message text
+          type: string
+        value:
+          description: The value at the given location
+      type: object
+    ErrorModel:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          examples:
+            - https://example.com/api/schemas/ErrorModel.json
+          format: uri
+          readOnly: true
+          type: string
+        detail:
+          description: A human-readable explanation specific to this occurrence of the problem.
+          examples:
+            - Property foo is required but is missing.
+          type: string
+        errors:
+          description: Optional list of individual error details
+          items:
+            $ref: "#/components/schemas/ErrorDetail"
+          type:
+            - array
+            - "null"
+        instance:
+          description: A URI reference that identifies the specific occurrence of the problem.
+          examples:
+            - https://example.com/error-log/abc123
+          format: uri
+          type: string
+        status:
+          description: HTTP status code
+          examples:
+            - 400
+          format: int64
+          type: integer
+        title:
+          description: A short, human-readable summary of the problem type. This value should not change between occurrences of the error.
+          examples:
+            - Bad Request
+          type: string
+        type:
+          default: about:blank
+          description: A URI reference to human-readable documentation for the error.
+          examples:
+            - https://example.com/errors/example
+          format: uri
+          type: string
+      type: object
+    File:
+      additionalProperties: false
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        size:
+          type: string
+        type:
+          enum:
+            - stl
+            - 3mf
+            - gcode
+            - step
+            - pdf
+          type: string
+        updatedAt:
+          type: string
+      required:
+        - id
+        - name
+        - type
+        - size
+        - updatedAt
+      type: object
+    Item:
+      additionalProperties: false
+      properties:
+        at:
+          type: string
+        description:
+          type: string
+        id:
+          type: string
+        title:
+          type: string
+      required:
+        - id
+        - at
+        - title
+        - description
+      type: object
+    Iteration:
+      additionalProperties: false
+      properties:
+        duration:
+          type: string
+        id:
+          type: string
+        label:
+          type: string
+        material:
+          type: string
+        notes:
+          type: string
+        outcome:
+          enum:
+            - success
+            - failed
+            - queued
+          type: string
+        printer:
+          type: string
+        startedAt:
+          type: string
+      required:
+        - id
+        - label
+        - printer
+        - material
+        - startedAt
+        - duration
+        - outcome
+        - notes
+      type: object
+    License:
+      additionalProperties: false
+      properties:
+        name:
+          type: string
+        url:
+          type: string
+      required:
+        - name
+        - url
+      type: object
+    LoginInputBody:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          examples:
+            - https://example.com/api/schemas/LoginInputBody.json
+          format: uri
+          readOnly: true
+          type: string
+        email:
+          type: string
+      required:
+        - email
+      type: object
+    LoginOutputBody:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          examples:
+            - https://example.com/api/schemas/LoginOutputBody.json
+          format: uri
+          readOnly: true
+          type: string
+        user:
+          $ref: "#/components/schemas/User"
+      required:
+        - user
+      type: object
+    PrintProfile:
+      additionalProperties: false
+      properties:
+        layerHeightMm:
+          format: double
+          type: number
+        material:
+          type: string
+        nozzleMm:
+          format: double
+          type: number
+        printTimeMinutes:
+          format: int64
+          type: integer
+        printer:
+          type: string
+        quantity:
+          format: int64
+          type: integer
+        weightGrams:
+          format: double
+          type: number
+      required:
+        - printTimeMinutes
+        - weightGrams
+        - quantity
+        - nozzleMm
+        - layerHeightMm
+        - material
+        - printer
+      type: object
+    Project:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          examples:
+            - https://example.com/api/schemas/Project.json
+          format: uri
+          readOnly: true
+          type: string
+        description:
+          type: string
+        files:
+          items:
+            $ref: "#/components/schemas/File"
+          type:
+            - array
+            - "null"
+        hasThumbnail:
+          type: boolean
+        id:
+          type: string
+        iterations:
+          items:
+            $ref: "#/components/schemas/Iteration"
+          type:
+            - array
+            - "null"
+        lastActivity:
+          type: string
+        license:
+          $ref: "#/components/schemas/License"
+        notes:
+          items:
+            type: string
+          type:
+            - array
+            - "null"
+        printProfile:
+          $ref: "#/components/schemas/PrintProfile"
+        source:
+          $ref: "#/components/schemas/Source"
+        state:
+          enum:
+            - active
+            - printing
+            - archived
+            - trash
+            - draft
+          type: string
+        tags:
+          items:
+            type: string
+          type:
+            - array
+            - "null"
+        title:
+          type: string
+      required:
+        - id
+        - title
+        - description
+        - state
+        - lastActivity
+        - tags
+        - files
+        - iterations
+        - notes
+        - source
+        - license
+        - printProfile
+        - hasThumbnail
+      type: object
+    SessionOutputBody:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          examples:
+            - https://example.com/api/schemas/SessionOutputBody.json
+          format: uri
+          readOnly: true
+          type: string
+        user:
+          $ref: "#/components/schemas/User"
+      required:
+        - user
+      type: object
+    SidebarStats:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          examples:
+            - https://example.com/api/schemas/SidebarStats.json
+          format: uri
+          readOnly: true
+          type: string
+        diskPercent:
+          format: int64
+          type: integer
+        diskTotal:
+          type: string
+        diskUsed:
+          type: string
+        version:
+          type: string
+      required:
+        - version
+        - diskUsed
+        - diskTotal
+        - diskPercent
+      type: object
+    Source:
+      additionalProperties: false
+      properties:
+        category:
+          type: string
+        designer:
+          type: string
+        designerUrl:
+          type: string
+        url:
+          type: string
+      required:
+        - url
+        - designer
+        - designerUrl
+        - category
+      type: object
+    StateUpdate:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          examples:
+            - https://example.com/api/schemas/StateUpdate.json
+          format: uri
+          readOnly: true
+          type: string
+        state:
+          enum:
+            - active
+            - printing
+            - archived
+            - trash
+            - draft
+          type: string
+      required:
+        - state
+      type: object
+    User:
+      additionalProperties: false
+      properties:
+        email:
+          type: string
+        name:
+          type: string
+      required:
+        - name
+        - email
+      type: object
+info:
+  title: Meshbox Studio API
+  version: dev
+openapi: 3.1.0
+paths:
+  /api/activity:
+    get:
+      description: Returns the recent activity feed.
+      operationId: list-activity
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/Item"
+                type:
+                  - array
+                  - "null"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      summary: List activity feed
+      tags:
+        - Activity
+  /api/auth/login:
+    post:
+      description: Any email/password combination logs in as the demo user.
+      operationId: auth-login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginInputBody"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LoginOutputBody"
+          description: OK
+          headers:
+            Set-Cookie:
+              schema:
+                type: string
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      summary: Log in
+      tags:
+        - Auth
+  /api/auth/logout:
+    post:
+      description: Clears the session cookie.
+      operationId: auth-logout
+      responses:
+        "204":
+          description: No Content
+          headers:
+            Set-Cookie:
+              schema:
+                type: string
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      summary: Log out
+      tags:
+        - Auth
+  /api/auth/session:
+    get:
+      description: Returns the authenticated user or 401.
+      operationId: auth-session
+      parameters:
+        - in: cookie
+          name: meshbox_session
+          schema:
+            $ref: "#/components/schemas/Cookie"
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SessionOutputBody"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      summary: Get current session
+      tags:
+        - Auth
+  /api/projects:
+    get:
+      description: Returns all projects.
+      operationId: list-projects
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/Project"
+                type:
+                  - array
+                  - "null"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      summary: List projects
+      tags:
+        - Projects
+    post:
+      description: Creates a new project in draft state.
+      operationId: create-project
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateInputBody"
+        required: true
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Project"
+          description: Created
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      summary: Create a draft project
+      tags:
+        - Projects
+  /api/projects/import:
+    post:
+      description: Upload a Printables model zip. Extracts files, PDF metadata, and thumbnail. Returns 422 if no valid Printables PDF found.
+      operationId: import-project
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              properties:
+                filename:
+                  contentMediaType: application/octet-stream
+                  description: filename of the file being uploaded
+                  format: binary
+                  type: string
+                name:
+                  description: general purpose name for multipart form value
+                  type: string
+              type: object
+        required: true
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Project"
+          description: Created
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      summary: Import project from Printables zip
+      tags:
+        - Projects
+  /api/projects/{id}:
+    delete:
+      description: Permanently removes the project.
+      operationId: delete-project
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: No Content
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      summary: Delete project forever
+      tags:
+        - Projects
+    patch:
+      description: Updates a project's state (e.g. active, trash, archived).
+      operationId: update-project
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StateUpdate"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Project"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      summary: Update project state
+      tags:
+        - Projects
+    put:
+      description: Updates a project's title, description, tags, source, and license.
+      operationId: edit-project
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EditInputBody"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Project"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      summary: Edit project metadata
+      tags:
+        - Projects
+  /api/stats:
+    get:
+      description: Returns system information for the sidebar footer.
+      operationId: get-stats
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SidebarStats"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      summary: Get sidebar stats
+      tags:
+        - Stats
+

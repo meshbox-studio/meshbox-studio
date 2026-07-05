@@ -1,0 +1,65 @@
+name: Backend
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+
+      - name: Setup Go
+        uses: actions/setup-go@4a3601121dd01d1626a1e23e37211e3254c1c06c # v6
+        with:
+          go-version: "1.26"
+
+      - name: Setup Node.js
+        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6
+        with:
+          node-version: "lts/*"
+
+      - name: Install frontend dependencies
+        run: npm --prefix frontend ci --legacy-peer-deps
+
+      - name: Build frontend assets
+        run: npm --prefix frontend run build
+
+      - name: Build
+        run: go -C backend build -v ./...
+
+      - name: Test
+        run: go -C backend test ./...
+
+      - name: Verify OpenAPI spec is up to date
+        run: |
+          go -C backend run . openapi > api/openapi.tmp.yaml
+          if ! diff -q api/openapi.yaml api/openapi.tmp.yaml; then
+            echo "::error::api/openapi.yaml is out of date. Run 'go -C backend run . openapi > api/openapi.yaml' and commit the result."
+            exit 1
+          fi
+  openapi:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - name: Setup Go
+        uses: actions/setup-go@4a3601121dd01d1626a1e23e37211e3254c1c06c # v6
+        with:
+          go-version: '1.26'
+
+      - name: Verify OpenAPI spec is up to date
+        run: |
+          go -C backend run . openapi > api/openapi.tmp.yaml
+          if ! diff -q api/openapi.yaml api/openapi.tmp.yaml; then
+            echo "::error::api/openapi.yaml is out of date. Run 'go -C backend run . openapi > api/openapi.yaml' and commit the result."
+            exit 1
+          fi

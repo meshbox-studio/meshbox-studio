@@ -1,8 +1,11 @@
 .env
-assets/css/output.css
-assets/css/sources.generated.css
-*_templ.go
 meshbox-studio
 .cache
 site
 .vscode
+frontend/node_modules
+frontend/dist
+backend/data/
+backend/internal/webui/dist/*
+!backend/internal/webui/dist/.gitkeep
+!backend/internal/webui/dist/app/.gitkeep

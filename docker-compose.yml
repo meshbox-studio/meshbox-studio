@@ -2,5 +2,13 @@ services:
   app:
     image: ghcr.io/meshbox-studio/meshbox-studio:latest
     restart: unless-stopped
+    environment:
+      - PORT=8090
+      - DATA_DIR=/data/meshbox
+    volumes:
+      - meshbox-data:/data/meshbox
     ports:
       - 8090:8090
+
+volumes:
+  meshbox-data:
