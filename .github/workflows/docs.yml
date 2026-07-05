@@ -23,7 +23,7 @@ permissions:
 
 env:
   # renovate: datasource=docker depName=zensical/zensical versioning=semver
-  ZENSICAL_VERSION: 0.0.46
+  ZENSICAL_VERSION: 0.0.47
 
 jobs:
   docs:
