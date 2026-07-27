@@ -6,7 +6,21 @@ export default defineNuxtConfig({
   },
   modules: ["@nuxt/ui", "@nuxt/eslint"],
   css: ["~/assets/css/main.css"],
-  ui: {},
+  ui: {
+    theme: {
+      // Nuxt UI's defaults plus "printing" — a first-class semantic color for
+      // work that is happening right now. See docs/design-language.md.
+      colors: [
+        "primary",
+        "secondary",
+        "success",
+        "info",
+        "warning",
+        "error",
+        "printing",
+      ],
+    },
+  },
   nitro: {
     output: {
       publicDir: "../backend/internal/webui/dist/app",

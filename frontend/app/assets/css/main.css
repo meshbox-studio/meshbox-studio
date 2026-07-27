@@ -1,15 +1,140 @@
 @import "tailwindcss";
 @import "@nuxt/ui";
 
+/* ---------------------------------------------------------------------------
+ * Typeface — Geist / Geist Mono (self-hosted from public/fonts).
+ * Sans carries the interface. Mono carries measured values: dimensions,
+ * durations, file sizes, temperatures, hashes, IDs.
+ * ------------------------------------------------------------------------- */
+
+@font-face {
+  font-family: "Geist";
+  src: url("/fonts/geist/geist-variable.woff2") format("woff2-variations");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Geist Mono";
+  src: url("/fonts/geist/geist-mono-variable.woff2") format("woff2-variations");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ---------------------------------------------------------------------------
+ * Graphite — the neutral ramp. A true-neutral gray pulled a few degrees warm
+ * so it sits under an amber "printing" state without turning green, and so
+ * the chrome never competes with the cool interactive accent.
+ * ------------------------------------------------------------------------- */
+
+@theme static {
+  --color-graphite-50: #fafaf8;
+  --color-graphite-100: #f2f2ef;
+  --color-graphite-200: #e6e5e0;
+  --color-graphite-300: #d1d0ca;
+  --color-graphite-400: #a09f97;
+  --color-graphite-500: #737269;
+  --color-graphite-600: #57564f;
+  --color-graphite-700: #403f3a;
+  --color-graphite-800: #292824;
+  --color-graphite-900: #191917;
+  --color-graphite-950: #0c0c0b;
+}
+
+@theme {
+  --font-sans: "Geist", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, "SFMono-Regular", monospace;
+}
+
+/* ---------------------------------------------------------------------------
+ * Shape and rhythm.
+ * ------------------------------------------------------------------------- */
+
+:root {
+  /* xs 4 · sm 8 · md 12 · lg 16 · xl 24 · 2xl 32 */
+  --ui-radius: 0.5rem;
+  --ui-header-height: 3.5rem;
+  --ui-container: 88rem;
+
+  /* The page canvas, distinct from --ui-bg, which is the surface that sits on
+     top of it. In dark mode the canvas is true black and the surfaces lift off
+     it; that separation is the whole point of the OLED theme. */
+  --mb-canvas: var(--color-graphite-100);
+}
+
+/* ---------------------------------------------------------------------------
+ * Light. Paper canvas, white surfaces, ink that stops short of black.
+ * ------------------------------------------------------------------------- */
+
+:root,
+.light {
+  /* 500 is too light to carry white label text; 700 clears 5.3:1. */
+  --ui-primary: var(--ui-color-primary-700);
+
+  --ui-bg: #ffffff;
+  --ui-bg-muted: var(--color-graphite-50);
+  --ui-bg-elevated: var(--color-graphite-100);
+  --ui-bg-accented: var(--color-graphite-200);
+  --ui-bg-inverted: var(--color-graphite-900);
+
+  --ui-border: var(--color-graphite-200);
+  --ui-border-muted: var(--color-graphite-200);
+  --ui-border-accented: var(--color-graphite-300);
+  --ui-border-inverted: var(--color-graphite-900);
+
+  --ui-text-dimmed: var(--color-graphite-500);
+  --ui-text-muted: var(--color-graphite-600);
+  --ui-text-toned: var(--color-graphite-600);
+  --ui-text: var(--color-graphite-700);
+  --ui-text-highlighted: var(--color-graphite-900);
+  --ui-text-inverted: #ffffff;
+}
+
+/* ---------------------------------------------------------------------------
+ * Dark (OLED). The canvas is #000 so it costs zero light on an OLED panel and
+ * thumbnails read as the only lit thing on screen.
+ *
+ * Two rules make this work, and both are easy to break by accident:
+ *   1. Nothing is pure white. #f2f2ef instead of #fff — pure white on pure
+ *      black blooms and smears while scrolling on OLED.
+ *   2. Elevation is not a shadow. Shadows are invisible against #000, so depth
+ *      comes from a lighter surface plus a translucent white hairline.
+ * ------------------------------------------------------------------------- */
+
+.dark {
+  --mb-canvas: #000000;
+
+  --ui-primary: var(--ui-color-primary-400);
+
+  /* Surfaces lift off the black canvas in four measured steps. */
+  --ui-bg: #0c0c0b; /* cards, popovers, menus, modals */
+  --ui-bg-muted: #141413; /* input wells, recessed rows */
+  --ui-bg-elevated: #1a1a18; /* hover, soft badges */
+  --ui-bg-accented: #262622; /* pressed, chips, tracks */
+  --ui-bg-inverted: #f2f2ef;
+
+  /* Translucent hairlines read identically over every surface above. */
+  --ui-border: color-mix(in oklab, #ffffff 9%, transparent);
+  --ui-border-muted: color-mix(in oklab, #ffffff 6%, transparent);
+  --ui-border-accented: color-mix(in oklab, #ffffff 15%, transparent);
+  --ui-border-inverted: #f2f2ef;
+
+  --ui-text-dimmed: #7b7a73; /* 4.9:1 on black */
+  --ui-text-muted: #8a8982; /* 6.0:1 */
+  --ui-text-toned: #a09f97;
+  --ui-text: #d1d0ca; /* 14.2:1 — body copy */
+  --ui-text-highlighted: #f2f2ef; /* 18.4:1 — headings, never #fff */
+  --ui-text-inverted: #0c0c0b;
+}
+
 @layer base {
   body {
-    @apply bg-zinc-50 text-zinc-900 antialiased dark:bg-zinc-950 dark:text-zinc-100;
+    background-color: var(--mb-canvas);
     margin: 0;
     min-height: 100svh;
-    background-image:
-      radial-gradient(circle at 0% 0%, color-mix(in oklab, var(--ui-color-primary-400) 15%, transparent) 0, transparent 35%),
-      radial-gradient(circle at 100% 100%, color-mix(in oklab, var(--ui-color-primary-600) 10%, transparent) 0, transparent 40%);
-    background-attachment: fixed;
+    text-rendering: optimizeLegibility;
   }
 
   #__nuxt {
@@ -19,5 +144,68 @@
   button:not(:disabled),
   [role="button"]:not(:disabled) {
     cursor: pointer;
+  }
+
+  /* Measured values are mono and tabular, so columns of numbers align and a
+     value that ticks upward does not reflow the row it lives in. */
+  :where(code, kbd, samp),
+  .mb-measure {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "zero" 1;
+  }
+
+  ::selection {
+    background-color: color-mix(in oklab, var(--ui-primary) 30%, transparent);
+    color: var(--ui-text-highlighted);
+  }
+
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--ui-bg-accented) transparent;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+ * Domain utilities.
+ * ------------------------------------------------------------------------- */
+
+/* Build plate — the backdrop for any thumbnail, viewport, or empty media slot.
+   Reads as a printer bed, and gives transparent PNG renders something to sit
+   on instead of dissolving into the canvas. */
+@utility plate {
+  background-color: var(--ui-bg-muted);
+  background-image:
+    linear-gradient(to right, var(--ui-border-muted) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--ui-border-muted) 1px, transparent 1px);
+  background-size: 12px 12px;
+  background-position: center center;
+}
+
+/* Live indicator for work in progress (printing, importing, extracting).
+   Breathing, not blinking — noticeable in peripheral vision without
+   demanding attention. */
+@utility mb-live {
+  animation: mb-breathe 2.4s ease-in-out infinite;
+}
+
+@keyframes mb-breathe {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

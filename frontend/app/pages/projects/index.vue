@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { projectStateColor, projectStateLabel } from "~/utils/project";
 
 definePageMeta({
   title: "Projects",
@@ -78,7 +77,7 @@ function thumbnailUrl(id: string): string {
               <img
                 v-if="project.hasThumbnail"
                 :src="thumbnailUrl(project.id)"
-                class="size-16 shrink-0 rounded-md border border-default object-cover"
+                class="plate size-16 shrink-0 rounded-md border border-default object-cover"
                 alt=""
               >
               <div>
@@ -91,11 +90,7 @@ function thumbnailUrl(id: string): string {
                 <p class="mt-1 text-sm text-muted">{{ project.description }}</p>
               </div>
             </div>
-            <UBadge
-              :color="projectStateColor(project.state)"
-              variant="soft"
-              :label="projectStateLabel(project.state)"
-            />
+            <ProjectStateBadge :state="project.state" />
           </div>
         </template>
 
@@ -142,11 +137,14 @@ function thumbnailUrl(id: string): string {
               variant="outline"
               icon="i-lucide-arrow-up-right"
             />
+            <!-- Destructive actions stay quiet until you reach for them. Red
+                 at rest trains people to ignore red. -->
             <UButton
               label="Move to trash"
-              color="error"
+              color="neutral"
               variant="ghost"
               icon="i-lucide-trash-2"
+              class="text-muted hover:text-error"
               @click="trashProject(project.id)"
             />
           </div>

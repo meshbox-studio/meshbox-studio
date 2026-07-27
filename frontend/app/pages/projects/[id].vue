@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { fileIconName, outcomeColor, outcomeLabel, printTimeLabel, projectStateColor, projectStateLabel } from "~/utils/project";
+import { fileIconName, outcomeColor, outcomeLabel, printTimeLabel } from "~/utils/project";
 import type { EditProjectInput } from "~/types/meshbox";
 
 definePageMeta({
@@ -98,7 +98,7 @@ function fileDownloadUrl(id: string, fileId: string): string {
             <img
               v-if="project.hasThumbnail"
               :src="thumbnailUrl(project.id)"
-              class="size-24 rounded-lg border border-default object-cover"
+              class="plate size-24 rounded-lg border border-default object-cover"
               alt="Thumbnail"
             >
             <div>
@@ -107,11 +107,7 @@ function fileDownloadUrl(id: string, fileId: string): string {
             </div>
           </div>
           <div class="flex items-center gap-2">
-            <UBadge
-              :color="projectStateColor(project.state)"
-              variant="soft"
-              :label="projectStateLabel(project.state)"
-            />
+            <ProjectStateBadge :state="project.state" size="md" />
             <UButton
               icon="i-lucide-pencil"
               color="neutral"

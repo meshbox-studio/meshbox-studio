@@ -54,19 +54,23 @@ const links = computed<NavigationMenuItem[][]>(() => [
 
 <template>
   <UDashboardGroup storage="local" storage-key="meshbox-dashboard">
+    <!-- The sidebar takes no background of its own: it sits directly on the
+         canvas (true black in dark mode) and is separated by a hairline only.
+         Panels that paint themselves grey are what make an OLED theme look
+         like a grey theme. -->
     <UDashboardSidebar
       id="main-sidebar"
       v-model:open="open"
       collapsible
-      class="bg-default/90 backdrop-blur"
+      :ui="{ root: 'bg-transparent' }"
     >
       <template #header="{ collapsed }">
         <NuxtLink
           to="/"
-          class="flex items-center gap-2 overflow-hidden rounded-lg px-1 py-0.5 text-lg font-semibold text-highlighted"
+          class="flex items-center gap-2 overflow-hidden rounded-md px-1 py-0.5 font-semibold tracking-tight text-highlighted"
         >
           <span
-            class="inline-flex size-7 shrink-0 items-center justify-center rounded-md bg-primary-500/20 text-primary-600 dark:text-primary-400"
+            class="inline-flex size-7 shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary ring-1 ring-primary/20"
           >
             <UIcon name="i-lucide-box" class="size-4" />
           </span>
@@ -79,11 +83,15 @@ const links = computed<NavigationMenuItem[][]>(() => [
           color="neutral"
           variant="soft"
           icon="i-lucide-search"
-          :label="collapsed ? undefined : 'Search projects, notes, materials'"
+          :label="collapsed ? undefined : 'Search'"
           :square="collapsed"
           block
-          class="mb-2"
-        />
+          class="mb-2 justify-start text-muted"
+        >
+          <template v-if="!collapsed" #trailing>
+            <UKbd value="/" class="ms-auto" />
+          </template>
+        </UButton>
 
         <UNavigationMenu
           :items="links[0]"
@@ -101,19 +109,28 @@ const links = computed<NavigationMenuItem[][]>(() => [
           class="mt-auto"
         />
       </template>
+
+      <template #footer="{ collapsed }">
+        <SidebarStatusFooter :collapsed="collapsed" />
+      </template>
     </UDashboardSidebar>
 
-    <UDashboardPanel id="main-panel" :ui="{ body: 'flex flex-col gap-4 sm:gap-6 flex-1 overflow-y-auto px-4 py-4 sm:px-6 sm:py-6' }">
+    <UDashboardPanel id="main-panel">
       <template #header>
-        <UDashboardNavbar :title="route.meta.title as string || 'Workspace'">
+        <UDashboardNavbar
+          :title="route.meta.title as string || 'Workspace'"
+          :ui="{ title: 'text-base font-semibold tracking-tight' }"
+        >
           <template #leading>
             <UDashboardSidebarCollapse />
           </template>
 
           <template #right>
-            <CreateProjectSlideover />
             <ThemeModeButton />
             <WorkspaceUserMenu />
+            <!-- One primary action per view, and it is always the rightmost
+                 thing in the navbar. It is the only solid accent on screen. -->
+            <CreateProjectSlideover />
           </template>
         </UDashboardNavbar>
       </template>
