@@ -12,7 +12,7 @@ tasks:
   frontend:install:
     desc: Install frontend dependencies
     cmds:
-      - npm --prefix frontend install
+      - npm --prefix frontend install --legacy-peer-deps
 
   frontend:dev:
     desc: Run frontend Vite dev server
