@@ -11,11 +11,6 @@ Meshbox Studio acts as your personal 3D printing journal and file vault.
 > This project is still in early development and not recommended for general use.
 > We are currently focusing on architectural foundations and welcome early feedback or contributions to help shape the roadmap.
 
-> [!NOTE]
-> This project serves as a personal learning journey into Go.
-> While the frontend was primarily scaffolded and styled with the help of AI,
-> the backend logic is mostly written by hand to ensure a deep, practical understanding of Go patterns and architecture.
-
 ## Features
 
 TBD
@@ -23,6 +18,16 @@ TBD
 ## Getting Started
 
 TBD
+
+## Repository structure
+
+- `frontend/` contains the templ UI and static assets.
+- `backend/` contains the Go application entry point and server.
+- `docs/` contains the documentation site content.
+
+The frontend and backend share the Go module at the repository root. Run
+`task dev` from the root to start the development server and CSS watcher, or
+`task docs` to preview the documentation.
 
 ## License
 
