@@ -76,4 +76,4 @@ jobs:
           echo "Determined tags: ${GITHUB_OUTPUT}"
 
       - name: Build and push
-        run: ko build --tags="${{ steps.meta.outputs.tags }}" --bare ./cmd/meshbox-studio
+        run: ko build --tags="${{ steps.meta.outputs.tags }}" --bare ./backend/cmd/meshbox-studio
