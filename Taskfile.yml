@@ -6,7 +6,7 @@ tasks:
     env:
       GO_ENV: development
     cmds:
-      - go tool templ generate --watch -proxyport="8090" --proxy="http://localhost:8080" --cmd="go run ./cmd/meshbox-studio" --open-browser=true
+      - go tool templ generate --watch -proxyport="8090" --proxy="http://localhost:8080" --cmd="go run ./backend/cmd/meshbox-studio" --open-browser=true
 
   css:sources:
     internal: true
@@ -17,23 +17,23 @@ tasks:
     cmds:
       - |
         printf '%s\n' \
-          '@source "./**/*.templ";' \
-          '@source "./**/*.js";' \
+          '@source "../../ui/**/*.templ";' \
+          '@source "../../ui/**/*.js";' \
           '@source "{{.TEMPLUI_PATH}}/components/**/*.templ";' \
           '@source "{{.TEMPLUI_PATH}}/components/**/*.js";' \
-          > ./assets/css/sources.generated.css
+          > ./frontend/assets/css/sources.generated.css
 
   tailwind:build:
     desc: Build Tailwind CSS once
     cmds:
       - task: css:sources
-      - tailwindcss -i ./assets/css/input.css -o ./assets/css/output.css --minify
+      - tailwindcss -i ./frontend/assets/css/input.css -o ./frontend/assets/css/output.css --minify
 
   tailwind:watch:
     desc: Watch Tailwind CSS changes
     cmds:
       - task: css:sources
-      - tailwindcss -i ./assets/css/input.css -o ./assets/css/output.css --watch
+      - tailwindcss -i ./frontend/assets/css/input.css -o ./frontend/assets/css/output.css --watch
 
   dev:
     desc: Start development server with hot reload
@@ -45,7 +45,7 @@ tasks:
     cmds:
       - go tool templ generate
       - task: tailwind:build
-      - ko build --local --bare ./cmd/meshbox-studio
+      - ko build --local --bare ./backend/cmd/meshbox-studio
 
   docs:
     desc: Run docs locally with docker

@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/meshbox-studio/meshbox-studio/assets"
-	"github.com/meshbox-studio/meshbox-studio/ui/pages"
+	"github.com/meshbox-studio/meshbox-studio/frontend/assets"
+	"github.com/meshbox-studio/meshbox-studio/frontend/ui/pages"
 
 	"github.com/a-h/templ"
 	"github.com/joho/godotenv"
@@ -64,7 +64,7 @@ func setupAssetsRoutes(mux *http.ServeMux) {
 
 		var fs http.Handler
 		if isDevelopment {
-			fs = http.FileServer(http.Dir("./assets"))
+			fs = http.FileServer(http.Dir("./frontend/assets"))
 		} else {
 			fs = http.FileServer(http.FS(assets.Assets))
 		}
