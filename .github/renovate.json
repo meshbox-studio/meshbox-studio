@@ -13,7 +13,7 @@
   "packageRules": [
     {
 			"matchManagers": ["gomod"],
-			"goGetDirs": ["github.com/meshbox-studio/meshbox-studio/ui/pages@none"],
+			"goGetDirs": ["github.com/meshbox-studio/meshbox-studio/frontend/ui/pages@none"],
 			"postUpgradeTasks": {
 				"commands": [
 					"cd {{packageFileDir}} && install-tool golang 1.26",
