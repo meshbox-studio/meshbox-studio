@@ -1,8 +1,8 @@
 .env
-assets/css/output.css
-assets/css/sources.generated.css
+frontend/assets/css/output.css
+frontend/assets/css/sources.generated.css
 *_templ.go
-meshbox-studio
+/meshbox-studio
 .cache
 site
 .vscode
